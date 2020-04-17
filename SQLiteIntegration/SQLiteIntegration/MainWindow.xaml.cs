@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SQLite;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -9,7 +12,8 @@ namespace SQLiteIntegration
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+      List<string> playerList = new List<string>();
+      public MainWindow()
         {
 
         }
@@ -27,7 +31,7 @@ namespace SQLiteIntegration
                 string datasource = @"Data Source=../../lahman2016.sqlite;";
                 //Batting.'2B' is the number of doubles a player hit in a season
                 //Batting.'3B' is the number of triples a player hit in a season
-                string sql = $"SELECT playerID, Batting.'2B' FROM Batting GROUP BY Batting.playerID HAVING SUM(Batting.'2B') > {doubles};";
+                string sql = $"SELECT namefirst, namelast,Sum (Batting.'2B'),Sum(Batting.'3B') FROM Master INNER JOIN Batting ON Batting.playerid = Master.playerid GROUP BY Master.playerid HAVING Sum (Batting.'2B')> {doubles};";
                 using (SQLiteConnection conn = new SQLiteConnection(datasource))
                 {
                     conn.Open();
@@ -38,9 +42,9 @@ namespace SQLiteIntegration
                 playerList.Clear();
                 foreach (DataRow row in dt.Rows)
                 {
-                    // MARKER: Making something different show up
-                    string playerRow = $"{row[0].ToString()}";
-                    playerList.Add(playerRow);
+               // MARKER: Making something different show up
+               string playerRow = $"{row​[0].ToString()} {row​[1].ToString()} - 2B = {row​[2].ToString()}, 3B = {row​[3].ToString()}";
+               playerList.Add(playerRow);
                 }
                 populateList();
             }
