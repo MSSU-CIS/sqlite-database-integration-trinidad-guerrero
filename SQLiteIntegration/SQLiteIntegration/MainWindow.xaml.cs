@@ -31,7 +31,7 @@ namespace SQLiteIntegration
                 string datasource = @"Data Source=../../lahman2016.sqlite;";
                 //Batting.'2B' is the number of doubles a player hit in a season
                 //Batting.'3B' is the number of triples a player hit in a season
-                string sql = $"SELECT namefirst, namelast,Sum (Batting.'2B'),Sum(Batting.'3B') FROM Master INNER JOIN Batting ON Batting.playerid = Master.playerid GROUP BY Master.playerid HAVING Sum (Batting.'2B')> {doubles};";
+                string sql = $"SELECT namefirst, namelast,Sum (Batting.'2B'),Sum (Batting.'3B') FROM Master INNER JOIN Batting ON Batting.playerid = Master.playerid GROUP BY Master.playerid HAVING Sum (Batting.'2B') > {doubles} AND Sum (Batting.'3B')> {triples};";
                 using (SQLiteConnection conn = new SQLiteConnection(datasource))
                 {
                     conn.Open();
