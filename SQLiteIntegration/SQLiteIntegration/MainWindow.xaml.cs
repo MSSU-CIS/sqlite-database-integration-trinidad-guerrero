@@ -39,6 +39,7 @@ namespace SQLiteIntegration
                     da.Fill(dt);
                     conn.Close();
                 }
+
                 playerList.Clear();
                 foreach (DataRow row in dt.Rows)
                 {
