@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLiteIntegration"
         mc:Ignorable="d"
-        Title="Baseball Database" Height="350" Width="525">
+        Title="Hip-Hop CD Database" Height="350" Width="525">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="24"/>
@@ -14,17 +14,18 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="37*"/>
+            <ColumnDefinition Width="135*"/>
+            <ColumnDefinition Width="346*"/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0"  Content="Doubles"/>
-        <Label Grid.Row="1" Grid.Column="0"  Content="Triples"/>
+        <Label Grid.Row="0" Grid.Column="0"  Content="Torrents" Grid.ColumnSpan="3" Margin="0,0,345.666,0"/>
+        <Label Grid.Row="1" Grid.Column="0"  Content="Tags" Grid.ColumnSpan="3" Margin="0,0,345.666,0"/>
 
-        <TextBox x:Name="DoublesTextBox" Grid.Row="0" Grid.Column="1"/>
-        <TextBox x:Name="TriplesTextBox" Grid.Row="1" Grid.Column="1"/>
+        <TextBox x:Name="TorrentsTextBox" Grid.Row="0" Grid.Column="2" Margin="0.334,0,-0.334,0"/>
+        <TextBox x:Name="TagsTextBox" Grid.Row="1" Grid.Column="2" Margin="0.334,0,-0.334,0"/>
 
-        <ListBox x:Name="ListView" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <ListBox x:Name="HiphopView" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,-0.334,67.667" Grid.RowSpan="2"/>
 
-        <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Submit" Click="Button_Click"/>
+        <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Content="Search Hip-Hop Base" Click="Button_Click" Margin="0,0.333,-0.334,-0.333"/>
     </Grid>
 </Window>
