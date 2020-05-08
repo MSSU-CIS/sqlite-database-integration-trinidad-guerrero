@@ -4,28 +4,29 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLiteIntegration"
-        mc:Ignorable="d"
-        Title="Hip-Hop CD Database" Height="350" Width="525">
+        mc:Ignorable="d" FocusManager.FocusedElement="{Binding ElementName=ArtistTextBox}"
+        Title="Album &amp; Artist" Height="350" Width="525">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="24"/>
-            <RowDefinition Height="24"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="37*"/>
             <ColumnDefinition Width="135*"/>
             <ColumnDefinition Width="346*"/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0"  Content="Torrents" Grid.ColumnSpan="3" Margin="0,0,345.666,0"/>
-        <Label Grid.Row="1" Grid.Column="0"  Content="Tags" Grid.ColumnSpan="3" Margin="0,0,345.666,0"/>
+        <Label Grid.Row="0" Grid.Column="0"  Content="Search database by artist name or album" Grid.ColumnSpan="2" Margin="5"/>
+        <Label Grid.Row="1" Grid.Column="0"  Content="Artist" Margin="5"/>
+        <Label Grid.Row="2" Grid.Column="0"  Content="Album" Margin="5"/>
 
-        <TextBox x:Name="TorrentsTextBox" Grid.Row="0" Grid.Column="2" Margin="0.334,0,-0.334,0"/>
-        <TextBox x:Name="TagsTextBox" Grid.Row="1" Grid.Column="2" Margin="0.334,0,-0.334,0"/>
+        <TextBox x:Name="ArtistTextBox" Grid.Row="1" Grid.Column="1" Margin="5" KeyDown="ArtistTextBox_KeyDown"/>
+        <TextBox x:Name="AlbumTextBox" Grid.Row="2" Grid.Column="1" Margin="5" KeyDown="AlbumTextBox_KeyDown"/>
 
-        <ListBox x:Name="HiphopView" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,-0.334,67.667" Grid.RowSpan="2"/>
+        <ListBox x:Name="TracksView" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" SelectionChanged="TracksView_SelectionChanged"/>
 
-        <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Content="Search Hip-Hop Base" Click="Button_Click" Margin="0,0.333,-0.334,-0.333"/>
+        <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="Search" Click="Button_Click" Margin="5"/>
     </Grid>
 </Window>
