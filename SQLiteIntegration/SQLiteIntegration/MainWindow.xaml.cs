@@ -84,29 +84,7 @@ namespace SQLiteIntegration
             DataTable dt = new DataTable();
 
             string datasource = @"Data Source=..\..\Chinook.sqlite;";
-            string sql = "select ab.`Title`, count(t.`TrackId`) as nos, ar.`Name`, ";
-            sql += " sum(t.`UnitPrice`) from Track t join Album ab ";
-            sql += " on t.`AlbumId` = ab.`AlbumId` join Artist ar on ab.`ArtistId` = ar.`ArtistId`";
-            string whr = "";
-            string text = AlbumTextBox.Text.Trim();
-            if (0 < text.Length)
-            {
-               whr += $" ab.`Title` like '%{text}%'";
-            }
-            text = ArtistTextBox.Text.Trim();
-            if (0 < text.Length)
-            {
-               if (0 < whr.Length)
-               {
-                  whr += " and ";
-               }
-               whr += $" ar.`Name` like '%{text}%'";
-            }
-            if (0 < whr.Length)
-            {
-               sql += " where " + whr;
-            }
-            sql += " group by ab.`AlbumId`";
+            string sql = $"select ab.`Title`, count(t.`TrackId`), at.`Name`, sum(t.`UnitPrice`) from Track t inner join Album ab on t.`AlbumId` = ab.`AlbumId` inner join Artist at on ab.`ArtistId` = at.`ArtistId` where ab.`Title` like '%{AlbumTextBox.Text.Trim()}%' AND at.`Name` like '%{ArtistTextBox.Text.Trim()}%' group by ab.`AlbumId`";
             using (SQLiteConnection conn = new SQLiteConnection(datasource))
             {
                conn.Open();
