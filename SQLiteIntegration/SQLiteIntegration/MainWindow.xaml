@@ -5,26 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLiteIntegration"
         mc:Ignorable="d"
-        Title="Baseball Database" Height="350" Width="525">
+        Title="SF Salaries Database" Height="350" Width="525">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="24"/>
             <RowDefinition Height="24"/>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="37*"/>
+            <ColumnDefinition Width="135*"/>
+            <ColumnDefinition Width="346*"/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0"  Content="Doubles"/>
-        <Label Grid.Row="1" Grid.Column="0"  Content="Triples"/>
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,0" IsEnabled="False" FontWeight="Bold" Foreground="Black">
+            <Label.Content>
+                <TextBlock TextWrapping="Wrap" Text="Enter Employee name, it will search the employee data base for the name in the entered value. Enter base pay as a number, it will search the employee database for the base pay of the entered value. All the records with matching values will be displayed."/>
+            </Label.Content>
+        </Label>
+        <Label Grid.Row="1" Grid.Column="0"  Content="Employee Name" Grid.ColumnSpan="3" Margin="0,0,345,0"/>
+        <Label Grid.Row="2" Grid.Column="0"  Content="Base Pay" Grid.ColumnSpan="3" Margin="0,0,345,0"/>
 
-        <TextBox x:Name="DoublesTextBox" Grid.Row="0" Grid.Column="1"/>
-        <TextBox x:Name="TriplesTextBox" Grid.Row="1" Grid.Column="1"/>
+        <TextBox x:Name="EmployeeNameTextBox" Grid.Row="1" Grid.Column="2" Margin="0,0,0,0"/>
+        <TextBox x:Name="BasePayTextBox" Grid.Row="2" Grid.Column="2" Margin="0,0,0,0"/>
 
-        <ListBox x:Name="ListView" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <ListBox x:Name="SalariesView" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,57" Grid.RowSpan="2"/>
 
-        <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Submit" Click="Button_Click"/>
+        <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Content="Search Salaries Base" Click="Button_Click" Margin="0,0,0,0"/>
     </Grid>
 </Window>
