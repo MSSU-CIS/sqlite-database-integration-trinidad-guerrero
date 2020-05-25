@@ -1,102 +1,116 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SQLiteIntegration
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
-    {
-      List<string> playerList = new List<string>();
+   /// <summary>
+   /// Interaction logic for MainWindow.xaml
+   /// </summary>
+   public partial class MainWindow : Window
+   {
+      List<string> TrackList;
+      List<string> DetailList;
       public MainWindow()
-        {
+      {
+         TrackList = new List<string>();
+         DetailList = new List<string>();
+      }
 
-        }
+      private void Button_Click(object sender, RoutedEventArgs e)
+      {
+         SearchTracks();
+      }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasValidInput())
+      private void populateList()
+      {
+         TracksView.Items.Clear();
+         foreach (string s in TrackList)
+         {
+            TracksView.Items.Add(s);
+         }
+      }
+
+      private string ValidateTextBox(TextBox box, string name)
+      {
+         string message = "";
+         string text = box.Text.Trim();
+         int amount = 0;
+
+         if (0 < text.Length)
+         {
+            bool isNumber = int.TryParse(text, out amount);
+            if (!isNumber)
             {
-                int doubles = int.Parse(DoublesTextBox.Text);
-                int triples = int.Parse(TriplesTextBox.Text);
-
-                //MARKER - Probably an error here
-                DataTable dt = new DataTable();
-
-                string datasource = @"Data Source=../../lahman2016.sqlite;";
-                //Batting.'2B' is the number of doubles a player hit in a season
-                //Batting.'3B' is the number of triples a player hit in a season
-                string sql = $"SELECT namefirst, namelast,Sum (Batting.'2B'),Sum (Batting.'3B') FROM Master INNER JOIN Batting ON Batting.playerid = Master.playerid GROUP BY Master.playerid HAVING Sum (Batting.'2B') > {doubles} AND Sum (Batting.'3B')> {triples};";
-                using (SQLiteConnection conn = new SQLiteConnection(datasource))
-                {
-                    conn.Open();
-                    SQLiteDataAdapter da = new SQLiteDataAdapter(sql, conn);
-                    da.Fill(dt);
-                    conn.Close();
-                }
-
-                playerList.Clear();
-                foreach (DataRow row in dt.Rows)
-                {
-               // MARKER: Making something different show up
-               string playerRow = $"{row​[0].ToString()} {row​[1].ToString()} - 2B = {row​[2].ToString()}, 3B = {row​[3].ToString()}";
-               playerList.Add(playerRow);
-                }
-                populateList();
+               message += $"Invalid Input - {name} is not a number! ";
             }
-        }
-
-        private void populateList()
-        {
-            ListView.Items.Clear();
-            foreach (string s in playerList)
+            if (amount < 0)
             {
-                ListView.Items.Add(s);
+               message += $"Invalid Input - {name} is negative! ";
             }
-        }
+         }
+         return message;
+      }
 
-        private string ValidateTextBox(TextBox box, string name)
-        {
-            string message = "";
-            string text = box.Text;
-            int amount = 0;
+      private bool HasValidInput()
+      {
+         return true;
+      }
 
-            if (text == "")
-                box.Text = "0";
-            else
+      private void AlbumTextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+      {
+         if (Key.Enter == e.Key)
+         {
+            SearchTracks();
+         }
+      }
+
+      private void ArtistTextBox_KeyDown(object sender, KeyEventArgs e)
+      {
+         if (Key.Enter == e.Key)
+         {
+            SearchTracks();
+         }
+      }
+
+      private void SearchTracks()
+      {
+
+         if (HasValidInput())
+         {
+            DataTable dt = new DataTable();
+
+            string datasource = @"Data Source=..\..\Chinook.sqlite;";
+            string sql = $"select ab.`Title`, count(t.`TrackId`), at.`Name`, sum(t.`UnitPrice`) from Track t inner join Album ab on t.`AlbumId` = ab.`AlbumId` inner join Artist at on ab.`ArtistId` = at.`ArtistId` where ab.`Title` like '%{AlbumTextBox.Text.Trim()}%' AND at.`Name` like '%{ArtistTextBox.Text.Trim()}%' group by ab.`AlbumId`";
+            using (SQLiteConnection conn = new SQLiteConnection(datasource))
             {
-                bool isNumber = int.TryParse(text, out amount);
-                if (!isNumber)
-                {
-                    message += $"Invalid Input - {name} is not a number! ";
-                }
-                if (amount < 0)
-                {
-                    message += $"Invalid Input - {name} is negative! ";
-                }
+               conn.Open();
+               SQLiteDataAdapter da = new SQLiteDataAdapter(sql, conn);
+               da.Fill(dt);
+               conn.Close();
             }
-            return message;
-        }
 
-        private bool HasValidInput()
-        {
-            string message = ValidateTextBox(DoublesTextBox, "Doubles") +
-                ValidateTextBox(TriplesTextBox, "Triples");
+            TrackList.Clear();
+            DetailList.Clear();
+            foreach (DataRow row in dt.Rows)
+            {
+               TrackList.Add(row​[0].ToString());
+               DetailList.Add($"No of Tracks {row[1].ToString()}\nArtist Name: {row[2].ToString()}\nPrice of Track: {row[3].ToString()}");
+            }
+            populateList();
+         }
+      }
 
-            if (message == "")
-            {
-                return true;
-            }
-            else
-            {
-                MessageBox.Show(message);
-                return false;
-            }
-        }
-    }
+      private void TracksView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      {
+         int i = TracksView.SelectedIndex;
+         if (-1 < i)
+         {
+            MessageBox.Show(DetailList[i], "Track Details");
+         }
+      }
+   }
 }
