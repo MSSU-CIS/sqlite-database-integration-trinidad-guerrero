@@ -41,7 +41,6 @@ namespace SQLiteIntegration
                conn.Close();
             }
 
-
             SalariesList.Clear();
             foreach (DataRow row in dt.Rows)
             {
